@@ -19,9 +19,6 @@ async function databaseConnect() {
 			console.error(err.stack);
 			process.exit(1);
 		};
-	} finally {
-		//finally close after doing task.
-		await client.close();
 	}
 }
 
