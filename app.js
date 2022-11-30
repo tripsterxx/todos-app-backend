@@ -86,4 +86,30 @@ app.get("/api/v1/alltasks", async (req, res) => {
 	}
 });
 
+app.patch("/api/v1/updateonetodo", async (req, res) => {
+	try {
+		const { email, _id, newtask } = req.body;
+		const updatedtask = {
+			task: `${newtask}`,
+		};
+
+		await client
+			.db(db)
+			.collection(collection)
+			.updateOne({ email, _id }, { $set: updatedtask });
+
+		res.status(200).json({
+			success: true,
+			message: `todo item updated!`,
+		});
+
+		await client.close();
+	} catch {
+		res.status(400).json({
+			success: false,
+			message: "something went wrong!",
+		});
+	}
+});
+
 module.exports = app;
