@@ -112,4 +112,24 @@ app.patch("/api/v1/updateonetodo", async (req, res) => {
 	}
 });
 
+app.delete("/api/v1/deleteonetodo", async (req, res) => {
+	try {
+		const { _id } = req.body;
+
+		await client.db(db).collection(collection).deleteOne({ _id });
+
+		res.status(200).json({
+			success: true,
+			message: `todo item deleted!`,
+		});
+
+		await client.close();
+	} catch {
+		res.status(400).json({
+			success: false,
+			message: "something went wrong while deleting the todo item!",
+		});
+	}
+});
+
 module.exports = app;
