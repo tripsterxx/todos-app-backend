@@ -28,17 +28,25 @@ app.post("/addtodo", async (req, res) => {
 		email,
 		task,
 	};
-	const result = await client
-		.db("todoapp")
-		.collection("todo_items")
-		.insertOne(data);
-	console.log(`New task created with id: ${result.insertedId}`);
+	try {
+		const result = await client
+			.db("todoapp")
+			.collection("todo_items")
+			.insertOne(data);
+		console.log(`New task created with id: ${result.insertedId}`);
 
-	res.status(200).json({
-		success: true,
-		message: `New task created with id: ${result.insertedId}`,
-	});
-	await client.close();
+		res.status(200).json({
+			success: true,
+			message: `New task created with id: ${result.insertedId}`,
+		});
+		await client.close();
+	} catch {
+		res.status(400).json({
+			success: true,
+			message: `something went wrong while adding todo task!`,
+		});
+		console.log("something went wrong while adding todo task!");
+	}
 });
 
 app.get("/todo/:id", async (req, res) => {
