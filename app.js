@@ -8,9 +8,12 @@ app.get("/", (req, res) => {
 });
 
 app.get("/healthcheck", (req, res) => {
-	res.send("API working Fine!");
+	res.status(200).json({
+		success: true,
+		greeting: "API WORKING FINE!",
+	});
 });
 
 app.listen(port, () => {
-	console.log(`TODO's app listening on port ${port}`);
+	console.log(`TODO's app listening on port http://localhost:${port}`);
 });
