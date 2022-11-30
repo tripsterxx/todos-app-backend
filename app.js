@@ -41,4 +41,25 @@ app.post("/addtodo", async (req, res) => {
 	await client.close();
 });
 
+app.get("/todo/:id", async (req, res) => {
+	const id = req.query;
+	const result = await client
+		.db("todoapp")
+		.collection("todo_items")
+		.findOne(id);
+
+	if (result) {
+		res.status(200).json({
+			success: true,
+			task: result.task,
+			date: result.data,
+		});
+	} else {
+		res.status(400).json({
+			success: false,
+			message: "something went wrong!!",
+		});
+	}
+});
+
 module.exports = app;
