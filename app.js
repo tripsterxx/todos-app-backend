@@ -4,7 +4,6 @@ require("dotenv").config();
 const { client } = require("./database/db");
 const nanoid = require("nanoid");
 
-//regular middlewares
 //regular middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -39,7 +38,6 @@ app.post("/api/v1/addtodo", async (req, res) => {
 			success: true,
 			message: `New task created with id: ${result.insertedId}`,
 		});
-		// await client.close();
 	} catch {
 		res.status(500).json({
 			success: true,
@@ -65,7 +63,6 @@ app.get("/api/v1/todo/:id", async (req, res) => {
 			task: result.task,
 			date: result.data,
 		});
-		// await client.close();
 	} else if (result == null) {
 		res.status(400).json({
 			success: false,
@@ -89,7 +86,6 @@ app.post("/api/v1/alltasks", async (req, res) => {
 			success: true,
 			result,
 		});
-		// await client.close();
 	} catch {
 		res.status(500).json({
 			success: false,
@@ -114,8 +110,6 @@ app.patch("/api/v1/updateonetodo", async (req, res) => {
 			success: true,
 			message: `todo item updated!`,
 		});
-
-		// await client.close();
 	} catch {
 		res.status(500).json({
 			success: false,
@@ -134,8 +128,6 @@ app.delete("/api/v1/deleteonetodo", async (req, res) => {
 			success: true,
 			message: `todo item deleted!`,
 		});
-
-		// await client.close();
 	} catch {
 		res.status(500).json({
 			success: false,
