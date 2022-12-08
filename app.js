@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 const db = "todoapp";
 const collection = "todo_items";
 
-app.get("/healthcheck", (req, res) => {
+app.get("/api/v1/healthcheck", (req, res) => {
 	res.status(200).json({
 		success: true,
 		greeting: "API WORKING FINE!",
@@ -39,7 +39,7 @@ app.post("/api/v1/addtodo", async (req, res) => {
 			success: true,
 			message: `New task created with id: ${result.insertedId}`,
 		});
-		await client.close();
+		// await client.close();
 	} catch {
 		res.status(500).json({
 			success: true,
@@ -52,8 +52,12 @@ app.post("/api/v1/addtodo", async (req, res) => {
 });
 
 app.get("/api/v1/todo/:id", async (req, res) => {
-	const id = req.query;
-	const result = await client.db(db).collection(collection).findOne(id);
+	const id = req.params.id;
+
+	const result = await client
+		.db(db)
+		.collection(collection)
+		.findOne({ _id: id });
 
 	if (result) {
 		res.status(200).json({
@@ -61,7 +65,12 @@ app.get("/api/v1/todo/:id", async (req, res) => {
 			task: result.task,
 			date: result.data,
 		});
-		await client.close();
+		// await client.close();
+	} else if (result == null) {
+		res.status(400).json({
+			success: false,
+			message: "couldnt find task with id: " + id,
+		});
 	} else {
 		res.status(500).json({
 			success: false,
@@ -80,7 +89,7 @@ app.post("/api/v1/alltasks", async (req, res) => {
 			success: true,
 			result,
 		});
-		await client.close();
+		// await client.close();
 	} catch {
 		res.status(500).json({
 			success: false,
@@ -106,7 +115,7 @@ app.patch("/api/v1/updateonetodo", async (req, res) => {
 			message: `todo item updated!`,
 		});
 
-		await client.close();
+		// await client.close();
 	} catch {
 		res.status(500).json({
 			success: false,
@@ -126,7 +135,7 @@ app.delete("/api/v1/deleteonetodo", async (req, res) => {
 			message: `todo item deleted!`,
 		});
 
-		await client.close();
+		// await client.close();
 	} catch {
 		res.status(500).json({
 			success: false,
