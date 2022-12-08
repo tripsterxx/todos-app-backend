@@ -8,8 +8,8 @@ const nanoid = require("nanoid");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const db = "todoapp";
-const collection = "todo_items";
+const db = process.env.DB;
+const collection = process.env.COLLECTION;
 
 app.get("/api/v1/healthcheck", (req, res) => {
 	res.status(200).json({
@@ -31,7 +31,7 @@ app.post("/api/v1/addtodo", async (req, res) => {
 		task,
 	};
 	try {
-		const result = await client.db(db).collection(collection).insertOne(data);
+		const result = client.db(db).collection(collection).insertOne(data);
 		console.log(`New task created with id: ${result.insertedId}`);
 
 		res.status(200).json({
