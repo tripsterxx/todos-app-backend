@@ -31,7 +31,7 @@ app.post("/addtodo", async (req, res) => {
 		task,
 	};
 	try {
-		const result = client.db(db).collection(collection).insertOne(data);
+		const result = await client.db(db).collection(collection).insertOne(data);
 		console.log(`New task created with id: ${result.insertedId}`);
 
 		res.status(200).json({
