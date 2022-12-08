@@ -11,14 +11,14 @@ app.use(express.urlencoded({ extended: true }));
 const db = process.env.DB;
 const collection = process.env.COLLECTION;
 
-app.get("/api/v1/healthcheck", (req, res) => {
+app.get("/healthcheck", (req, res) => {
 	res.status(200).json({
 		success: true,
 		greeting: "API WORKING FINE!",
 	});
 });
 
-app.post("/api/v1/addtodo", async (req, res) => {
+app.post("/addtodo", async (req, res) => {
 	console.log(req.body);
 	const { email, task } = req.body;
 	const date = Date.now();
@@ -49,7 +49,7 @@ app.post("/api/v1/addtodo", async (req, res) => {
 	}
 });
 
-app.get("/api/v1/todo/:id", async (req, res) => {
+app.get("/todo/:id", async (req, res) => {
 	const id = req.params.id;
 
 	const result = await client
@@ -76,7 +76,7 @@ app.get("/api/v1/todo/:id", async (req, res) => {
 	}
 });
 
-app.post("/api/v1/alltasks", async (req, res) => {
+app.post("/alltasks", async (req, res) => {
 	const { email } = req.body;
 	try {
 		const query = { email };
@@ -94,7 +94,7 @@ app.post("/api/v1/alltasks", async (req, res) => {
 	}
 });
 
-app.patch("/api/v1/updateonetodo", async (req, res) => {
+app.patch("/updateonetodo", async (req, res) => {
 	try {
 		const { email, _id, newtask } = req.body;
 		const updatedtask = {
@@ -118,7 +118,7 @@ app.patch("/api/v1/updateonetodo", async (req, res) => {
 	}
 });
 
-app.delete("/api/v1/deleteonetodo", async (req, res) => {
+app.delete("/deleteonetodo", async (req, res) => {
 	try {
 		const { _id } = req.body;
 
